@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+import pkg_resources
 
 app = FastAPI()
 
@@ -14,4 +15,12 @@ def health():
     return {
         "healthy": True
     }
-  
+
+@app.get("/version")
+def version():
+    try:
+        version = pkg_resources.get_distribution("mcp").version
+        return {"mcp_version": version}
+    except Exception as e:
+        return {"error": str(e)}
+        
